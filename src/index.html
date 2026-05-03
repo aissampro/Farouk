@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Farouk — AI CEO that builds and runs startups</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-primary: #FAFAF8;
+      --bg-secondary: #F3F2EE;
+      --bg-tertiary: #ECEAE4;
+      --border: #E0DDD6;
+      --border-soft: #EAE8E2;
+      --text-primary: #1A1917;
+      --text-secondary: #6B6860;
+      --text-tertiary: #9E9C97;
+      --accent: #2C2C2A;
+      --accent-light: #EEEDFE;
+      --accent-color: #534AB7;
+      --green: #3B6D11;
+      --green-light: #EAF3DE;
+      --orange: #854F0B;
+      --orange-light: #FAEEDA;
+      --blue: #185FA5;
+      --blue-light: #E6F1FB;
+      --teal: #0F6E56;
+      --teal-light: #E1F5EE;
+      --radius: 10px;
+      --radius-sm: 6px;
+    }
+
+    body {
+      font-family: 'Syne', sans-serif;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .os {
+      width: 100%;
+      max-width: 1000px;
+      background: var(--bg-tertiary);
+      border-radius: 14px;
+      border: 0.5px solid var(--border);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-height: 620px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+    }
+
+    /* HEADER */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      background: var(--bg-primary);
+      border-bottom: 0.5px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--text-primary);
+    }
+
+    .logo-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-sub {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--text-tertiary);
+      letter-spacing: 0;
+    }
+
+    .header-right { display: flex; align-items: center; gap: 12px; }
+
+    .lang-switch {
+      display: flex;
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+
+    .lang-btn {
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      font-family: 'Syne', sans-serif;
+      background: transparent;
+      color: var(--text-tertiary);
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      letter-spacing: 0.06em;
+    }
+
+    .lang-btn.active { background: var(--accent); color: #F1EFE8; }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      font-family: 'DM Mono', monospace;
+    }
+
+    .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #639922;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+
+    /* BODY */
+    .body { display: flex; flex: 1; overflow: hidden; }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 172px;
+      flex-shrink: 0;
+      background: var(--bg-primary);
+      border-right: 0.5px solid var(--border);
+      padding: 10px 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .nav-section {
+      padding: 10px 14px 3px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.12s;
+      border-left: 2px solid transparent;
+    }
+
+    .nav-item:hover { background: var(--bg-secondary); color: var(--text-primary); }
+    .nav-item.active { background: var(--bg-secondary); color: var(--text-primary); border-left-color: var(--accent-color); padding-left: 12px; }
+
+    /* MAIN */
+    .main { flex: 1; overflow-y: auto; padding: 22px; display: flex; flex-direction: column; gap: 18px; }
+
+    .screen { display: none; flex-direction: column; gap: 16px; }
+    .screen.active { display: flex; }
+
+    .label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+    }
+
+    .card {
+      background: var(--bg-primary);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px 20px;
+    }
+
+    /* LAUNCH SCREEN */
+    textarea.idea {
+      width: 100%;
+      padding: 12px 16px;
+      font-family: 'Syne', sans-serif;
+      font-size: 13.5px;
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      resize: none;
+      outline: none;
+      line-height: 1.65;
+      transition: border-color 0.15s;
+    }
+
+    textarea.idea:focus { border-color: var(--accent-color); }
+
+    .launch-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .model-tag {
+      font-size: 10.5px;
+      color: var(--text-tertiary);
+      font-family: 'DM Mono', monospace;
+    }
+
+    .btn-primary {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 20px;
+      background: var(--accent);
+      color: #F1EFE8;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.18s;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-primary:hover { background: #3D3D3A; transform: translateY(-1px); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+    .chips {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .chip {
+      padding: 9px 12px;
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.12s;
+      line-height: 1.45;
+    }
+
+    .chip:hover { background: var(--bg-primary); color: var(--text-primary); border-color: var(--border); }
+
+    .arch-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .arch-card {
+      background: var(--bg-primary);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 9px;
+      border-radius: var(--radius-sm);
+      font-size: 10px;
+      font-weight: 700;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.04em;
+    }
+
+    .tag-purple { background: var(--accent-light); color: var(--accent-color); }
+    .tag-teal   { background: var(--teal-light);   color: var(--teal); }
+    .tag-orange { background: var(--orange-light);  color: var(--orange); }
+    .tag-blue   { background: var(--blue-light);    color: var(--blue); }
+
+    .arch-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-top: 8px;
+    }
+
+    /* OUTPUT BLOCKS */
+    .output {
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border-soft);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      font-size: 13px;
+      color: var(--text-primary);
+      line-height: 1.8;
+      white-space: pre-wrap;
+      font-family: 'Syne', sans-serif;
+    }
+
+    .output.streaming::after {
+      content: '▋';
+      animation: blink 0.65s infinite;
+      color: var(--accent-color);
+    }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* AGENT CARDS */
+    .agents-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .agent-card {
+      background: var(--bg-primary);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .agent-top { display: flex; align-items: center; gap: 10px; }
+
+    .avatar {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      font-family: 'DM Mono', monospace;
+      flex-shrink: 0;
+    }
+
+    .agent-info { flex: 1; min-width: 0; }
+    .agent-name { font-size: 13px; font-weight: 600; }
+    .agent-role { font-size: 11px; color: var(--text-secondary); margin-top: 1px; }
+
+    .agent-status {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 10px; font-family: 'DM Mono', monospace;
+      padding: 3px 8px; border-radius: var(--radius-sm);
+      flex-shrink: 0;
+    }
+
+    .s-idle   { background: var(--bg-secondary); color: var(--text-tertiary); }
+    .s-work   { background: var(--orange-light);  color: var(--orange); }
+    .s-done   { background: var(--green-light);   color: var(--green); }
+
+    .progress { height: 2.5px; background: var(--bg-secondary); border-radius: 2px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--accent-color); border-radius: 2px; transition: width 0.5s ease; }
+
+    .agent-task { font-size: 11px; color: var(--text-tertiary); }
+
+    /* TASKS */
+    .task-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      padding: 10px 12px;
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border-soft);
+      border-radius: var(--radius-sm);
+    }
+
+    .check {
+      width: 15px; height: 15px;
+      border-radius: 4px;
+      border: 1.5px solid var(--border);
+      flex-shrink: 0; margin-top: 2px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.12s;
+    }
+
+    .check.done { background: var(--green); border-color: var(--green); }
+
+    .task-body { flex: 1; min-width: 0; }
+    .task-title { font-size: 13px; font-weight: 500; }
+    .task-meta { display: flex; gap: 6px; margin-top: 4px; align-items: center; }
+
+    .badge {
+      font-size: 10px; padding: 2px 7px;
+      border-radius: 4px; font-weight: 600;
+      font-family: 'DM Mono', monospace;
+    }
+
+    .pri { font-size: 10px; }
+    .pri-high { color: #C04A28; }
+    .pri-medium { color: var(--orange); }
+
+    /* LOG */
+    .log-row {
+      display: flex; gap: 10px; padding: 5px 0;
+      border-bottom: 0.5px solid var(--border-soft);
+      font-size: 12px;
+    }
+
+    .log-t { color: var(--text-tertiary); font-family: 'DM Mono', monospace; flex-shrink: 0; }
+    .log-a { font-weight: 600; flex-shrink: 0; }
+    .log-m { color: var(--text-secondary); }
+
+    /* EMPTY */
+    .empty {
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 40px 20px; text-align: center; gap: 8px;
+    }
+
+    .empty-title { font-size: 13px; font-weight: 600; }
+    .empty-desc { font-size: 12px; color: var(--text-secondary); max-width: 220px; line-height: 1.6; }
+
+    /* SCREEN HEADER ROW */
+    .screen-header {
+      display: flex; align-items: center;
+      justify-content: space-between;
+    }
+
+    .spin { animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* DISPATCH LOG */
+    .dispatch {
+      font-size: 11.5px;
+      color: var(--text-secondary);
+      line-height: 1.9;
+      font-family: 'DM Mono', monospace;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+
+<div class="os">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="logo">
+      <div class="logo-icon">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+          <rect x="2" y="2" width="6" height="6" rx="1.5" fill="#EEEDFE"/>
+          <rect x="10" y="2" width="6" height="6" rx="1.5" fill="#9FE1CB"/>
+          <rect x="2" y="10" width="6" height="6" rx="1.5" fill="#FAEEDA"/>
+          <rect x="10" y="10" width="6" height="6" rx="1.5" fill="#B5D4F4"/>
+        </svg>
+      </div>
+      <div>
+        <div>Farouk</div>
+        <div class="logo-sub" data-en="AI CEO that builds and runs startups" data-fr="Le CEO IA qui construit et pilote des startups">AI CEO that builds and runs startups</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="lang-switch">
+        <button class="lang-btn active" onclick="setLang('en')" id="btn-en">EN</button>
+        <button class="lang-btn" onclick="setLang('fr')" id="btn-fr">FR</button>
+      </div>
+      <div class="status">
+        <div class="dot" id="dot"></div>
+        <span id="status-txt">ready</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="body">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="nav-section" data-en="Command" data-fr="Commande">Command</div>
+      <div class="nav-item active" onclick="go('launch')">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M6.5 1L8 5H12.5L9 7.5L10.5 12L6.5 9L2.5 12L4 7.5L0.5 5H5Z" fill="currentColor"/></svg>
+        <span data-en="Launch" data-fr="Lancer">Launch</span>
+      </div>
+      <div class="nav-item" onclick="go('strategy')">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="8" y="1" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="1" y="8" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="8" y="8" width="4" height="4" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
+        <span data-en="Strategy" data-fr="Stratégie">Strategy</span>
+      </div>
+      <div class="nav-item" onclick="go('ceo')">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="4.5" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M1 12C1 9.5 3.5 7.5 6.5 7.5C9.5 7.5 12 9.5 12 12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <span data-en="CEO Plan" data-fr="Plan CEO">CEO Plan</span>
+      </div>
+      <div class="nav-section" data-en="Team" data-fr="Équipe">Team</div>
+      <div class="nav-item" onclick="go('agents')">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="5" width="3" height="7" rx="1" fill="currentColor" opacity="0.4"/><rect x="5" y="3" width="3" height="9" rx="1" fill="currentColor" opacity="0.65"/><rect x="9" y="1" width="3" height="11" rx="1" fill="currentColor"/></svg>
+        <span data-en="Agents" data-fr="Agents">Agents</span>
+      </div>
+      <div class="nav-item" onclick="go('tasks')">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 3.5H11M2 6.5H8.5M2 9.5H10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <span data-en="Tasks" data-fr="Tâches">Tasks</span>
+      </div>
+      <div class="nav-section" data-en="Output" data-fr="Résultats">Output</div>
+      <div class="nav-item" onclick="go('outputs')">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M3 2H10V11L6.5 9.5L3 11V2Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+        <span data-en="Outputs" data-fr="Livrables">Outputs</span>
+      </div>
+      <div class="nav-item" onclick="go('log')">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.2"/><path d="M3.5 4.5H9.5M3.5 6.5H7.5M3.5 8.5H8.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        <span data-en="Activity Log" data-fr="Journal">Activity Log</span>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+
+      <!-- LAUNCH -->
+      <div class="screen active" id="s-launch">
+        <div>
+          <div class="label" data-en="Your Business Idea" data-fr="Votre Idée de Startup">Your Business Idea</div>
+          <div class="card" style="margin-top:8px;">
+            <textarea class="idea" id="idea" rows="4"
+              data-ph-en="Describe your startup idea... e.g. 'An AI platform that helps freelancers automate invoicing and client management'"
+              data-ph-fr="Décrivez votre idée de startup... ex. 'Une plateforme IA qui aide les freelances à automatiser leur facturation et gestion clients'"></textarea>
+            <div class="launch-footer">
+              <div class="model-tag">claude-sonnet-4-20250514 · bilingual EN/FR</div>
+              <button class="btn-primary" id="launch-btn" onclick="launch()">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L7.5 4.5H11.5L8.5 7L9.5 11L6 8.5L2.5 11L3.5 7L0.5 4.5H4.5Z" fill="currentColor"/></svg>
+                <span data-en="Launch Farouk" data-fr="Lancer Farouk">Launch Farouk</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label" data-en="Quick Start" data-fr="Démarrage Rapide">Quick Start</div>
+          <div class="chips" style="margin-top:8px;">
+            <div class="chip"
+              data-en="Launch a coaching business for young professionals"
+              data-fr="Lancer un business de coaching pour jeunes professionnels"
+              onclick="setIdea(this)">Launch a coaching business for young professionals</div>
+            <div class="chip"
+              data-en="Build a SaaS tool that helps remote teams track team health"
+              data-fr="Créer un SaaS qui aide les équipes distantes à mesurer leur santé d'équipe"
+              onclick="setIdea(this)">Build a SaaS tool that helps remote teams track team health</div>
+            <div class="chip"
+              data-en="Create a marketplace for local artisans selling handmade goods"
+              data-fr="Créer une marketplace pour artisans locaux vendant des produits faits main"
+              onclick="setIdea(this)">Create a marketplace for local artisans selling handmade goods</div>
+            <div class="chip"
+              data-en="Launch an AI-powered mental wellness app for students"
+              data-fr="Lancer une application de bien-être mental propulsée par l'IA pour étudiants"
+              onclick="setIdea(this)">Launch an AI-powered mental wellness app for students</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="label" data-en="How It Works" data-fr="Comment ça marche">How It Works</div>
+          <div class="arch-grid">
+            <div class="arch-card">
+              <span class="tag tag-purple">STRATEGY</span>
+              <div class="arch-desc" data-en="McKinsey-level market analysis, positioning & business model" data-fr="Analyse de marché niveau McKinsey, positionnement & modèle économique">McKinsey-level market analysis, positioning & business model</div>
+            </div>
+            <div class="arch-card">
+              <span class="tag tag-teal">CEO LAYER</span>
+              <div class="arch-desc" data-en="90-day roadmap, team structure & key decisions" data-fr="Feuille de route 90 jours, structure d'équipe & décisions clés">90-day roadmap, team structure & key decisions</div>
+            </div>
+            <div class="arch-card">
+              <span class="tag tag-orange">AGENTS</span>
+              <div class="arch-desc" data-en="Léa · Hakim · Sarah · Omar — 4 AI employees running in parallel" data-fr="Léa · Hakim · Sarah · Omar — 4 agents IA en parallèle">Léa · Hakim · Sarah · Omar — 4 AI employees running in parallel</div>
+            </div>
+            <div class="arch-card">
+              <span class="tag tag-blue">OUTPUTS</span>
+              <div class="arch-desc" data-en="Business plan, GTM strategy, product roadmap, action items" data-fr="Plan d'affaires, stratégie GTM, roadmap produit, plan d'action">Business plan, GTM strategy, product roadmap, action items</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STRATEGY -->
+      <div class="screen" id="s-strategy">
+        <div class="screen-header">
+          <div class="label" data-en="Strategic Analysis" data-fr="Analyse Stratégique">Strategic Analysis</div>
+          <span class="tag tag-purple" data-en="CONSULTING MODE" data-fr="MODE CONSEIL">CONSULTING MODE</span>
+        </div>
+        <div id="strategy-body">
+          <div class="empty">
+            <div class="empty-title" data-en="No strategy yet" data-fr="Aucune stratégie générée">No strategy yet</div>
+            <div class="empty-desc" data-en="Launch Farouk to generate a full strategic analysis" data-fr="Lancez Farouk pour générer une analyse stratégique complète">Launch Farouk to generate a full strategic analysis</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CEO -->
+      <div class="screen" id="s-ceo">
+        <div class="screen-header">
+          <div class="label" data-en="CEO Execution Plan" data-fr="Plan d'Exécution CEO">CEO Execution Plan</div>
+          <span class="tag tag-teal" data-en="CEO MODE" data-fr="MODE CEO">CEO MODE</span>
+        </div>
+        <div id="ceo-body">
+          <div class="empty">
+            <div class="empty-title" data-en="Awaiting CEO plan" data-fr="En attente du plan CEO">Awaiting CEO plan</div>
+            <div class="empty-desc" data-en="Generated after strategic analysis" data-fr="Généré après l'analyse stratégique">Generated after strategic analysis</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AGENTS -->
+      <div class="screen" id="s-agents">
+        <div class="screen-header">
+          <div class="label" data-en="AI Agent Team" data-fr="Équipe d'Agents IA">AI Agent Team</div>
+          <span class="tag tag-orange" data-en="AGENT LAYER" data-fr="COUCHE AGENTS">AGENT LAYER</span>
+        </div>
+        <div class="agents-grid">
+          <div class="agent-card">
+            <div class="agent-top">
+              <div class="avatar" style="background:#EEEDFE;color:#3C3489;">LÉA</div>
+              <div class="agent-info">
+                <div class="agent-name" data-en="Léa — Marketing" data-fr="Léa — Marketing">Léa — Marketing</div>
+                <div class="agent-role" data-en="Growth, Content, Branding" data-fr="Croissance, Contenu, Marque">Growth, Content, Branding</div>
+              </div>
+              <div class="agent-status s-idle" id="st-mkt">
+                <div style="width:5px;height:5px;border-radius:50%;background:currentColor;"></div>
+                <span data-en="idle" data-fr="inactif">idle</span>
+              </div>
+            </div>
+            <div class="progress"><div class="progress-fill" id="p-mkt" style="width:0%"></div></div>
+            <div class="agent-task" id="t-mkt" data-en="Waiting for assignment" data-fr="En attente d'affectation">Waiting for assignment</div>
+          </div>
+
+          <div class="agent-card">
+            <div class="agent-top">
+              <div class="avatar" style="background:#E1F5EE;color:#0F6E56;">HAK</div>
+              <div class="agent-info">
+                <div class="agent-name" data-en="Hakim — Engineering" data-fr="Hakim — Ingénierie">Hakim — Engineering</div>
+                <div class="agent-role" data-en="Product, Code, Systems" data-fr="Produit, Code, Systèmes">Product, Code, Systems</div>
+              </div>
+              <div class="agent-status s-idle" id="st-eng">
+                <div style="width:5px;height:5px;border-radius:50%;background:currentColor;"></div>
+                <span data-en="idle" data-fr="inactif">idle</span>
+              </div>
+            </div>
+            <div class="progress"><div class="progress-fill" id="p-eng" style="width:0%"></div></div>
+            <div class="agent-task" id="t-eng" data-en="Waiting for assignment" data-fr="En attente d'affectation">Waiting for assignment</div>
+          </div>
+
+          <div class="agent-card">
+            <div class="agent-top">
+              <div class="avatar" style="background:#FAEEDA;color:#854F0B;">SAR</div>
+              <div class="agent-info">
+                <div class="agent-name" data-en="Sarah — Sales" data-fr="Sarah — Commercial">Sarah — Sales</div>
+                <div class="agent-role" data-en="Acquisition, Outreach, Conversion" data-fr="Acquisition, Prospection, Conversion">Acquisition, Outreach, Conversion</div>
+              </div>
+              <div class="agent-status s-idle" id="st-sls">
+                <div style="width:5px;height:5px;border-radius:50%;background:currentColor;"></div>
+                <span data-en="idle" data-fr="inactif">idle</span>
+              </div>
+            </div>
+            <div class="progress"><div class="progress-fill" id="p-sls" style="width:0%"></div></div>
+            <div class="agent-task" id="t-sls" data-en="Waiting for assignment" data-fr="En attente d'affectation">Waiting for assignment</div>
+          </div>
+
+          <div class="agent-card">
+            <div class="agent-top">
+              <div class="avatar" style="background:#E6F1FB;color:#185FA5;">OMA</div>
+              <div class="agent-info">
+                <div class="agent-name" data-en="Omar — Ops" data-fr="Omar — Opérations">Omar — Ops</div>
+                <div class="agent-role" data-en="Processes, Automation, Tracking" data-fr="Processus, Automatisation, Suivi">Processes, Automation, Tracking</div>
+              </div>
+              <div class="agent-status s-idle" id="st-ops">
+                <div style="width:5px;height:5px;border-radius:50%;background:currentColor;"></div>
+                <span data-en="idle" data-fr="inactif">idle</span>
+              </div>
+            </div>
+            <div class="progress"><div class="progress-fill" id="p-ops" style="width:0%"></div></div>
+            <div class="agent-task" id="t-ops" data-en="Waiting for assignment" data-fr="En attente d'affectation">Waiting for assignment</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="font-size:13px;font-weight:600;margin-bottom:10px;" data-en="Dispatch log" data-fr="Journal de dispatch">Dispatch log</div>
+          <div class="dispatch" id="dispatch" data-en="Agents standing by. Launch Farouk to begin." data-fr="Agents en attente. Lancez Farouk pour commencer.">Agents standing by. Launch Farouk to begin.</div>
+        </div>
+      </div>
+
+      <!-- TASKS -->
+      <div class="screen" id="s-tasks">
+        <div class="screen-header">
+          <div class="label" data-en="Task Orchestration" data-fr="Orchestration des Tâches">Task Orchestration</div>
+          <div id="task-ctr" style="font-size:11px;color:var(--text-tertiary);font-family:'DM Mono',monospace;">0/0</div>
+        </div>
+        <div id="tasks-body">
+          <div class="empty">
+            <div class="empty-title" data-en="No tasks yet" data-fr="Aucune tâche">No tasks yet</div>
+            <div class="empty-desc" data-en="Tasks are auto-generated and assigned after launch" data-fr="Les tâches sont générées automatiquement après le lancement">Tasks are auto-generated and assigned after launch</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OUTPUTS -->
+      <div class="screen" id="s-outputs">
+        <div class="screen-header">
+          <div class="label" data-en="Execution Outputs" data-fr="Livrables d'Exécution">Execution Outputs</div>
+          <span class="tag tag-blue" data-en="DELIVERABLES" data-fr="LIVRABLES">DELIVERABLES</span>
+        </div>
+        <div id="outputs-body">
+          <div class="empty">
+            <div class="empty-title" data-en="No outputs yet" data-fr="Aucun livrable">No outputs yet</div>
+            <div class="empty-desc" data-en="Full report generated after agent execution" data-fr="Rapport complet généré après l'exécution des agents">Full report generated after agent execution</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOG -->
+      <div class="screen" id="s-log">
+        <div class="label" data-en="Activity Log" data-fr="Journal d'Activité">Activity Log</div>
+        <div class="card">
+          <div id="log-body" style="display:flex;flex-direction:column;">
+            <div class="log-row">
+              <span class="log-t">00:00</span>
+              <span class="log-a" style="color:#534AB7;">SYSTEM</span>
+              <span class="log-m" data-en="Farouk initialized and ready" data-fr="Farouk initialisé et prêt">Farouk initialized and ready</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main -->
+  </div><!-- /body -->
+</div><!-- /os -->
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────────────
+const S = { lang:'en', idea:'', running:false, strategy:'', ceo:'', tasks:[], t0:null };
+
+// ─── TRANSLATIONS ─────────────────────────────────────────────────────────────
+const T = {
+  en: {
+    ready:'ready', running:'running', analyzing:'analyzing', ceoplanning:'planning',
+    orchestrating:'orchestrating', agentsworking:'agents active', generatingoutputs:'generating',
+    complete:'complete',
+    launchBtn:'Launch Farouk', launchingBtn:'Running...',
+    idle:'idle', working:'working...', done:'done',
+    waiting:'Waiting for assignment', allDone:'All tasks complete',
+    dispatching:'→ Dispatching all agents simultaneously...\n',
+    agentWorking:'Executing tasks...', agentFinalizing:'Finalizing...',
+    stratSys:`You are Farouk — an AI CEO and McKinsey-level strategy consultant.
+Produce a rigorous strategic analysis. Be specific with numbers, market sizes, price points.
+Identify real target users, not obvious ones. Give a clear go/no-go verdict.
+Use ALL CAPS section headers. Plain text, no markdown symbols. Every sentence must carry information.`,
+    stratUser: i => `Perform a complete strategic analysis for this startup idea: "${i}"
+
+Structure your response with these sections:
+MARKET OPPORTUNITY
+TARGET USERS
+POSITIONING
+BUSINESS MODEL
+KEY RISKS
+STRATEGIC RECOMMENDATION`,
+    ceoSys:`You are Farouk — a decisive startup CEO in the first 90 days.
+Translate strategy into concrete execution. Be specific with timelines, names, and actions.
+Use ALL CAPS section headers. Plain text, no markdown. Every line must be actionable.`,
+    ceoUser: (i,s) => `Based on this strategy for "${i}":
+${s}
+
+Create a CEO execution plan:
+COMPANY STRUCTURE
+90-DAY ROADMAP (Phase 1: Days 1-30 / Phase 2: Days 31-60 / Phase 3: Days 61-90)
+AGENT ASSIGNMENTS (Léa — Marketing / Hakim — Engineering / Sarah — Sales / Omar — Ops)
+KEY DECISIONS THIS WEEK
+SUCCESS METRICS (5 KPIs for 90 days)`,
+    taskSys:`You are a task orchestration system. Output ONLY valid JSON. No explanation. No markdown.`,
+    taskUser: (i,c) => `CEO plan for "${i}": ${c}
+Generate exactly 8 tasks as a JSON array:
+{"id":1,"agent":"marketing|engineering|sales|ops","title":"task title","priority":"high|medium","done":false}
+Output ONLY the JSON array.`,
+    agentSys: n => `You are ${n}, an AI employee at a startup. Execute your assigned tasks. Report concretely what you accomplished. Be specific — name tools, tactics, deliverables. English only.`,
+    agentUser: (i,tasks) => `Startup idea: "${i}"\nYour tasks: ${tasks}\nReport what you accomplished for each task. Be specific and concrete.`,
+    outSys:`You are generating a final startup report. Write in clear professional prose. ALL CAPS section headers. Plain text. No markdown symbols.`,
+    outUser: (i,s,c) => `Generate a consolidated startup report for "${i}".
+Strategy summary: ${s.slice(0,350)}
+CEO plan summary: ${c.slice(0,350)}
+
+Write:
+EXECUTIVE SUMMARY
+GO-TO-MARKET STRATEGY
+PRODUCT ROADMAP
+REVENUE PROJECTIONS
+WEEK 1 ACTION ITEMS (exactly 5 specific actions)`,
+    logLaunch: i => `OS launched — "${i.slice(0,45)}..."`,
+    logStrat:'Analyzing market and defining strategy...',
+    logStratDone:'Strategy complete. Handing off to CEO.',
+    logCeo:'Building 90-day roadmap and assembling team...',
+    logCeoDone:'CEO plan ready. Dispatching agents.',
+    logTasks:'Generating and assigning tasks...',
+    logTasksDone: n => `${n} tasks generated and assigned.`,
+    logAgentOn: n => `${n} online. Executing tasks.`,
+    logAgentDone: n => `${n} completed all tasks.`,
+    logOutputs:'Generating consolidated report...',
+    logDone:'Farouk run complete. All outputs ready.',
+  },
+  fr: {
+    ready:'prêt', running:'en cours', analyzing:'analyse', ceoplanning:'planification',
+    orchestrating:'orchestration', agentsworking:'agents actifs', generatingoutputs:'génération',
+    complete:'terminé',
+    launchBtn:"Lancer Farouk", launchingBtn:'En cours...',
+    idle:'inactif', working:'actif...', done:'terminé',
+    waiting:"En attente d'affectation", allDone:'Toutes les tâches complètes',
+    dispatching:'→ Dispatch simultané de tous les agents...\n',
+    agentWorking:'Exécution des tâches...', agentFinalizing:'Finalisation...',
+    stratSys:`Tu es Farouk — un CEO IA et consultant stratégique niveau McKinsey.
+Produis une analyse stratégique rigoureuse. Sois précis avec des chiffres, tailles de marché, prix.
+Identifie les vrais utilisateurs cibles. Donne un verdict clair go/no-go.
+Utilise des titres de section en MAJUSCULES. Texte simple, sans symboles markdown. Réponds entièrement en français.`,
+    stratUser: i => `Effectue une analyse stratégique complète pour cette idée de startup : "${i}"
+
+Structure ta réponse avec ces sections :
+OPPORTUNITÉ DE MARCHÉ
+UTILISATEURS CIBLES
+POSITIONNEMENT
+MODÈLE ÉCONOMIQUE
+RISQUES PRINCIPAUX
+RECOMMANDATION STRATÉGIQUE`,
+    ceoSys:`Tu es Farouk — un CEO de startup décisif dans les 90 premiers jours.
+Transforme la stratégie en exécution concrète. Sois précis avec des délais et des actions.
+Titres de section en MAJUSCULES. Texte simple, sans markdown. Réponds entièrement en français.`,
+    ceoUser: (i,s) => `Sur la base de cette stratégie pour "${i}" :
+${s}
+
+Crée un plan d'exécution CEO :
+STRUCTURE DE L'ENTREPRISE
+FEUILLE DE ROUTE 90 JOURS (Phase 1 : Jours 1-30 / Phase 2 : Jours 31-60 / Phase 3 : Jours 61-90)
+ASSIGNATIONS AGENTS (Léa — Marketing / Hakim — Ingénierie / Sarah — Commercial / Omar — Ops)
+DÉCISIONS CLÉS CETTE SEMAINE
+MÉTRIQUES DE SUCCÈS (5 KPIs pour 90 jours)`,
+    taskSys:`Tu es un système d'orchestration de tâches. Réponds UNIQUEMENT en JSON valide. Aucune explication.`,
+    taskUser: (i,c) => `Plan CEO pour "${i}" : ${c}
+Génère exactement 8 tâches sous forme de tableau JSON :
+{"id":1,"agent":"marketing|engineering|sales|ops","title":"titre de la tâche","priority":"high|medium","done":false}
+Réponds UNIQUEMENT avec le tableau JSON.`,
+    agentSys: n => `Tu es ${n}, un employé IA d'une startup. Exécute tes tâches. Rapporte concrètement ce que tu as accompli. Sois précis — nomme des outils, tactiques, livrables. Réponds entièrement en français.`,
+    agentUser: (i,tasks) => `Idée de startup : "${i}"\nTes tâches : ${tasks}\nRapporte ce que tu as accompli pour chaque tâche. Sois précis et concret.`,
+    outSys:`Tu génères un rapport de startup final. Écris en prose professionnelle claire. Titres de section en MAJUSCULES. Texte simple. Réponds entièrement en français.`,
+    outUser: (i,s,c) => `Génère un rapport de startup consolidé pour "${i}".
+Résumé stratégie : ${s.slice(0,350)}
+Résumé plan CEO : ${c.slice(0,350)}
+
+Rédige :
+RÉSUMÉ EXÉCUTIF
+STRATÉGIE GO-TO-MARKET
+FEUILLE DE ROUTE PRODUIT
+PROJECTIONS DE REVENUS
+ACTIONS SEMAINE 1 (exactement 5 actions spécifiques)`,
+    logLaunch: i => `OS lancé — "${i.slice(0,45)}..."`,
+    logStrat:'Analyse du marché et définition de la stratégie...',
+    logStratDone:'Stratégie complète. Transfert vers le CEO.',
+    logCeo:"Construction feuille de route 90 jours et assemblage de l'équipe...",
+    logCeoDone:"Plan CEO prêt. Dispatch des agents.",
+    logTasks:'Génération et assignation des tâches...',
+    logTasksDone: n => `${n} tâches générées et assignées.`,
+    logAgentOn: n => `${n} en ligne. Exécution des tâches.`,
+    logAgentDone: n => `${n} a complété toutes ses tâches.`,
+    logOutputs:'Génération du rapport consolidé...',
+    logDone:'Exécution Farouk terminée. Tous les livrables sont prêts.',
+  }
+};
+
+const t = k => T[S.lang][k];
+const tf = (k,...a) => T[S.lang][k](...a);
+
+// ─── LANG ─────────────────────────────────────────────────────────────────────
+function setLang(lang) {
+  S.lang = lang;
+  document.getElementById('btn-en').classList.toggle('active', lang==='en');
+  document.getElementById('btn-fr').classList.toggle('active', lang==='fr');
+  document.querySelectorAll('[data-en]').forEach(el => {
+    const key = 'data-' + lang;
+    const val = el.getAttribute(key) || el.getAttribute('data-en');
+    if (el.tagName === 'TEXTAREA') {
+      const phKey = 'data-ph-' + lang;
+      el.placeholder = el.getAttribute(phKey) || el.getAttribute('data-ph-en');
+    } else {
+      el.textContent = val;
+    }
+  });
+  document.getElementById('status-txt').textContent = t('ready');
+}
+
+// ─── NAV ──────────────────────────────────────────────────────────────────────
+function go(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('active');
+  const order = ['launch','strategy','ceo','agents','tasks','outputs','log'];
+  const items = document.querySelectorAll('.nav-item');
+  const idx = order.indexOf(id);
+  if (idx>=0 && items[idx]) items[idx].classList.add('active');
+}
+
+// ─── IDEA CHIPS ───────────────────────────────────────────────────────────────
+function setIdea(el) {
+  document.getElementById('idea').value = el.getAttribute('data-'+S.lang) || el.textContent;
+}
+
+// ─── STATUS ───────────────────────────────────────────────────────────────────
+function setStatus(key, active) {
+  document.getElementById('status-txt').textContent = t(key);
+  document.getElementById('dot').style.background = active ? '#BA7517' : '#639922';
+}
+
+// ─── LOG ──────────────────────────────────────────────────────────────────────
+function addLog(agent, msg, color) {
+  const el = S.t0 ? Math.floor((Date.now()-S.t0)/1000) : 0;
+  const ts = String(Math.floor(el/60)).padStart(2,'0')+':'+String(el%60).padStart(2,'0');
+  const row = document.createElement('div');
+  row.className = 'log-row';
+  row.innerHTML = `<span class="log-t">${ts}</span><span class="log-a" style="color:${color||'var(--text-primary)'};">${agent}</span><span class="log-m">${msg}</span>`;
+  document.getElementById('log-body').appendChild(row);
+}
+
+// ─── AGENT STATUS ─────────────────────────────────────────────────────────────
+const agentMap = {
+  mkt:{ st:'st-mkt', p:'p-mkt', task:'t-mkt' },
+  eng:{ st:'st-eng', p:'p-eng', task:'t-eng' },
+  sls:{ st:'st-sls', p:'p-sls', task:'t-sls' },
+  ops:{ st:'st-ops', p:'p-ops', task:'t-ops' },
+};
+
+const statusCls = { idle:'s-idle', working:'s-work', done:'s-done' };
+
+function setAgent(prefix, status, taskMsg, pct) {
+  const m = agentMap[prefix];
+  const el = document.getElementById(m.st);
+  el.className = 'agent-status ' + (statusCls[status]||'s-idle');
+  el.innerHTML = `<div style="width:5px;height:5px;border-radius:50%;background:currentColor;"></div>${t(status==='idle'?'idle':status==='working'?'working':'done')}`;
+  document.getElementById(m.task).textContent = taskMsg || '';
+  document.getElementById(m.p).style.width = (pct||0)+'%';
+}
+
+// ─── API ──────────────────────────────────────────────────────────────────────
+async function stream(sys, user, el) {
+  el.textContent = '';
+  el.classList.add('streaming');
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, stream:true, system:sys, messages:[{role:'user',content:user}] })
+  });
+  const reader = res.body.getReader();
+  const dec = new TextDecoder();
+  let full = '';
+  while(true) {
+    const {done,value} = await reader.read();
+    if(done) break;
+    for(const line of dec.decode(value).split('\n')) {
+      if(line.startsWith('data: ')) {
+        try {
+          const d = JSON.parse(line.slice(6));
+          if(d.type==='content_block_delta'&&d.delta?.text) { full+=d.delta.text; el.textContent=full; }
+        } catch(e){}
+      }
+    }
+  }
+  el.classList.remove('streaming');
+  return full;
+}
+
+async function call(sys, user) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, system:sys, messages:[{role:'user',content:user}] })
+  });
+  const d = await res.json();
+  return d.content?.map(b=>b.text||'').join('')||'';
+}
+
+// ─── MAIN LAUNCH ──────────────────────────────────────────────────────────────
+async function launch() {
+  const idea = document.getElementById('idea').value.trim();
+  if(!idea || S.running) return;
+  S.idea = idea; S.running = true; S.t0 = Date.now();
+
+  const btn = document.getElementById('launch-btn');
+  btn.disabled = true;
+  btn.innerHTML = `<svg class="spin" width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1V3M6 9V11M1 6H3M9 6H11M2.1 2.1L3.5 3.5M8.5 8.5L9.9 9.9M2.1 9.9L3.5 8.5M8.5 3.5L9.9 2.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg> ${t('launchingBtn')}`;
+
+  setStatus('running', true);
+  addLog('SYSTEM', tf('logLaunch', idea), '#534AB7');
+
+  // PHASE 1 — STRATEGY
+  go('strategy');
+  addLog('STRATEGY', t('logStrat'), '#7F77DD');
+  setStatus('analyzing', true);
+  const stratEl = document.createElement('div');
+  stratEl.className = 'output';
+  document.getElementById('strategy-body').innerHTML = '';
+  document.getElementById('strategy-body').appendChild(stratEl);
+  S.strategy = await stream(t('stratSys'), tf('stratUser', idea), stratEl);
+  addLog('STRATEGY', t('logStratDone'), '#7F77DD');
+
+  // PHASE 2 — CEO
+  go('ceo');
+  addLog('CEO', t('logCeo'), '#1D9E75');
+  setStatus('ceoplanning', true);
+  const ceoEl = document.createElement('div');
+  ceoEl.className = 'output';
+  document.getElementById('ceo-body').innerHTML = '';
+  document.getElementById('ceo-body').appendChild(ceoEl);
+  S.ceo = await stream(t('ceoSys'), tf('ceoUser', idea, S.strategy), ceoEl);
+  addLog('CEO', t('logCeoDone'), '#1D9E75');
+
+  // PHASE 3 — TASKS
+  go('tasks');
+  addLog('OPS', t('logTasks'), '#BA7517');
+  setStatus('orchestrating', true);
+  const raw = await call(t('taskSys'), tf('taskUser', idea, S.ceo));
+  let tasks = [];
+  try { tasks = JSON.parse(raw.replace(/```json|```/g,'').trim()); if(!Array.isArray(tasks)) tasks=[]; }
+  catch(e) {
+    tasks = [
+      {id:1,agent:'marketing',title:S.lang==='fr'?'Définir identité de marque et messaging':'Define brand identity and messaging',priority:'high',done:false},
+      {id:2,agent:'engineering',title:S.lang==='fr'?'Construire la liste MVP et architecture':'Build MVP feature list and architecture',priority:'high',done:false},
+      {id:3,agent:'sales',title:S.lang==='fr'?'Cartographier 50 clients potentiels':'Map 50 potential customers',priority:'high',done:false},
+      {id:4,agent:'ops',title:S.lang==='fr'?'Configurer gestion de projet et suivi':'Set up project management and tracking',priority:'medium',done:false},
+      {id:5,agent:'marketing',title:S.lang==='fr'?'Rédiger copy de la landing page':'Write landing page copy',priority:'high',done:false},
+      {id:6,agent:'engineering',title:S.lang==='fr'?'Prototyper le flux utilisateur principal':'Prototype core user flow',priority:'high',done:false},
+      {id:7,agent:'sales',title:S.lang==='fr'?'Rédiger séquences de prospection':'Draft outreach sequences',priority:'medium',done:false},
+      {id:8,agent:'ops',title:S.lang==='fr'?'Créer processus onboarding client':'Create client onboarding process',priority:'medium',done:false},
+    ];
+  }
+  S.tasks = tasks;
+
+  const bgMap = {marketing:'#EEEDFE',engineering:'#E1F5EE',sales:'#FAEEDA',ops:'#E6F1FB'};
+  const fgMap = {marketing:'#3C3489',engineering:'#0F6E56',sales:'#854F0B',ops:'#185FA5'};
+  const taskBody = document.getElementById('tasks-body');
+  taskBody.innerHTML = '';
+  const list = document.createElement('div');
+  list.style.cssText = 'display:flex;flex-direction:column;gap:8px;';
+  tasks.forEach(tk => {
+    const item = document.createElement('div');
+    item.className = 'task-item';
+    item.id = 'tk-'+tk.id;
+    item.innerHTML = `
+      <div class="check" id="chk-${tk.id}" onclick="toggleTask(${tk.id})"></div>
+      <div class="task-body">
+        <div class="task-title" id="ttl-${tk.id}">${tk.title}</div>
+        <div class="task-meta">
+          <span class="badge" style="background:${bgMap[tk.agent]};color:${fgMap[tk.agent]};">${tk.agent.toUpperCase()}</span>
+          <span class="pri ${tk.priority==='high'?'pri-high':'pri-medium'}">${tk.priority}</span>
+        </div>
+      </div>`;
+    list.appendChild(item);
+  });
+  taskBody.appendChild(list);
+  updateCounter();
+  addLog('OPS', tf('logTasksDone', tasks.length), '#BA7517');
+
+  // PHASE 4 — AGENTS (parallel)
+  go('agents');
+  setStatus('agentsworking', true);
+  document.getElementById('dispatch').textContent = t('dispatching');
+
+  const agentCfg = [
+    { prefix:'mkt', key:'marketing', nameEn:'Léa (Marketing)', nameFr:'Léa (Marketing)',   color:'#534AB7' },
+    { prefix:'eng', key:'engineering', nameEn:'Hakim (Engineering)', nameFr:'Hakim (Ingénierie)', color:'#1D9E75' },
+    { prefix:'sls', key:'sales', nameEn:'Sarah (Sales)', nameFr:'Sarah (Commercial)', color:'#BA7517' },
+    { prefix:'ops', key:'ops', nameEn:'Omar (Ops)', nameFr:'Omar (Opérations)',   color:'#185FA5' },
+  ];
+
+  await Promise.all(agentCfg.map(async cfg => {
+    const name = S.lang==='fr' ? cfg.nameFr : cfg.nameEn;
+    setAgent(cfg.prefix, 'working', t('agentWorking'), 20);
+    addLog(name, t('logAgentOn',name), cfg.color);
+    const myTasks = tasks.filter(tk=>tk.agent===cfg.key).map(tk=>tk.title).join(', ');
+    try {
+      setAgent(cfg.prefix, 'working', t('agentWorking'), 50);
+      const result = await call(tf('agentSys', name), tf('agentUser', idea, myTasks));
+      setAgent(cfg.prefix, 'working', t('agentFinalizing'), 80);
+      document.getElementById('dispatch').textContent += `\n[${name.toUpperCase()}]\n${result.slice(0,160)}...\n`;
+      tasks.filter(tk=>tk.agent===cfg.key).forEach(tk=>{
+        tk.done=true;
+        const chk=document.getElementById('chk-'+tk.id);
+        if(chk){chk.classList.add('done');chk.innerHTML='<svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3 5.5L8 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';}
+        const ttl=document.getElementById('ttl-'+tk.id);
+        if(ttl)ttl.style.cssText='text-decoration:line-through;opacity:0.45;';
+      });
+      updateCounter();
+      addLog(name, tf('logAgentDone', name), cfg.color);
+    } catch(e) { setAgent(cfg.prefix,'idle','',0); }
+  }));
+
+  // PHASE 5 — OUTPUT
+  go('outputs');
+  addLog('SYSTEM', t('logOutputs'), '#534AB7');
+  setStatus('generatingoutputs', true);
+  const outEl = document.createElement('div');
+  outEl.className = 'output';
+  document.getElementById('outputs-body').innerHTML = '';
+  document.getElementById('outputs-body').appendChild(outEl);
+  await stream(t('outSys'), tf('outUser', idea, S.strategy, S.ceo), outEl);
+
+  // DONE
+  S.running = false;
+  btn.disabled = false;
+  btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L7.5 4.5H11.5L8.5 7L9.5 11L6 8.5L2.5 11L3.5 7L0.5 4.5H4.5Z" fill="currentColor"/></svg> ${t('launchBtn')}`;
+  setStatus('complete', false);
+  addLog('SYSTEM', t('logDone'), '#3B6D11');
+  agentCfg.forEach(cfg => setAgent(cfg.prefix,'done',t('allDone'),100));
+}
+
+function toggleTask(id) {
+  const tk = S.tasks.find(t=>t.id===id);
+  if(!tk) return;
+  tk.done = !tk.done;
+  const chk = document.getElementById('chk-'+id);
+  chk.classList.toggle('done',tk.done);
+  chk.innerHTML = tk.done ? '<svg width="9" height="7" viewBox="0 0 9 7" fill="none"><path d="M1 3.5L3 5.5L8 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>' : '';
+  updateCounter();
+}
+
+function updateCounter() {
+  const done = S.tasks.filter(t=>t.done).length;
+  document.getElementById('task-ctr').textContent = done+'/'+S.tasks.length;
+}
+
+// Init
+setLang('en');
+</script>
+</body>
+</html>
