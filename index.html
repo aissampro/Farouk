@@ -951,7 +951,7 @@ function setAgent(prefix, status, taskMsg, pct) {
 async function stream(sys, user, el) {
   el.textContent = '';
   el.classList.add('streaming');
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+  const res = await fetch('/api/chat', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, stream:true, system:sys, messages:[{role:'user',content:user}] })
@@ -976,7 +976,7 @@ async function stream(sys, user, el) {
 }
 
 async function call(sys, user) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
+  const res = await fetch('/api/chat', {
     method:'POST',
     headers:{'Content-Type':'application/json'},
     body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:1000, system:sys, messages:[{role:'user',content:user}] })
